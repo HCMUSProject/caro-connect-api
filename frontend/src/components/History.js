@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, List, Button } from 'semantic-ui-react';
+import { List, Button, Card } from 'antd';
 
 const History = ({ history, jumpTo, toggleSort, selected, sort }) => {
   const renderMoves = () => {
@@ -22,12 +22,10 @@ const History = ({ history, jumpTo, toggleSort, selected, sort }) => {
 
       const isSelect = id === selected;
       return (
-        // eslint-disable-next-line react/no-array-index-key
         <List.Item key={id}>
           <Button
-            primary={isSelect}
-            size='small'
-            fluid
+            type={isSelect ? 'primary' : 'default'}
+            block
             onClick={() => jumpTo(id)}
           >
             {desc}
@@ -37,25 +35,29 @@ const History = ({ history, jumpTo, toggleSort, selected, sort }) => {
     });
   };
 
-  const sortIcon = sort ? 'angle down' : 'angle up';
+  const sortIcon = sort ? 'down' : 'up';
 
   return (
-    <Card className='history-block'>
-      <Card.Content>
-        <div className='box-title'>
-          <h6 className='history-title'>History</h6>
-          <Button
-            size='mini'
-            icon={sortIcon}
-            onClick={toggleSort}
-            label='Order by'
-          />
-        </div>
-
-        <Card.Description className='history-items'>
-          <List>{renderMoves()}</List>
-        </Card.Description>
-      </Card.Content>
+    <Card
+      title='History'
+      className='game-card history-block'
+      extra={
+        <Button
+          size='small'
+          type='primary'
+          shape='circle'
+          icon={sortIcon}
+          onClick={toggleSort}
+        />
+      }
+    >
+      <List
+        style={{ maxHeight: '300px', overflowX: 'auto' }}
+        size='small'
+        split={false}
+      >
+        {renderMoves()}
+      </List>
     </Card>
   );
 };

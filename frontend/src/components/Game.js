@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Card, Button, Confirm } from 'semantic-ui-react';
+// import { Card, Button, Confirm } from 'semantic-ui-react';
+import { Row, Col, Card, Button, Modal } from 'antd';
 import Board from './Board';
 import History from './History';
 
@@ -363,45 +364,65 @@ const Game = ({
     setOpen(false);
   };
 
+  const showConfirm = () => {
+    Modal.confirm({
+      title: 'Reset game',
+      content: 'Do you want to reset this game?',
+      okText: 'Yes',
+      cancelTextokText: 'No',
+      onOk() {
+        resetGame();
+      },
+      onCancel() {
+        setOpen(false);
+      },
+    });
+  };
+
   return (
-    <div className='game-wrapper' style={{ backgroundColor: '#a4b0be' }}>
-      <Card className='game-info'>
-        <Card.Content>
-          <Card.Header as='h1'>Caro Vietnam - v3</Card.Header>
-          <Card.Description>
+    <div
+      className='game-wrapper'
+      style={{ minHeight: window.innerHeight, overflow: 'hidden' }}
+    >
+      <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, 0]}>
+        <Col xs={24} sm={18}>
+          <Row
+            type='flex'
+            style={{ height: window.innerHeight }}
+            justify='center'
+            align='top'
+          >
+            <Col>
+              <Board
+                listPoints={listPointsDisplay}
+                board={boardDisplay}
+                xIsNext={xIsNext}
+                onClick={handleClick}
+                winner={winner}
+              />
+            </Col>
+          </Row>
+        </Col>
+
+        <Col xs={24} sm={6}>
+          <Card title='Game infomation' className='game-card game-info'>
             <p>{showPlayer()}</p>
 
-            <Button size='small' onClick={() => setOpen(true)}>
+            <Button type='primary' onClick={() => setOpen(true)}>
               Reset game
             </Button>
-          </Card.Description>
-        </Card.Content>
-      </Card>
+          </Card>
+          <History
+            history={history.list}
+            sort={sortASC}
+            toggleSort={() => setSort(!sortASC)}
+            jumpTo={jumpTo}
+            selected={history.step}
+          />
+        </Col>
+      </Row>
 
-      <Board
-        listPoints={listPointsDisplay}
-        board={boardDisplay}
-        xIsNext={xIsNext}
-        onClick={handleClick}
-        winner={winner}
-      />
-
-      <History
-        history={history.list}
-        sort={sortASC}
-        toggleSort={() => setSort(!sortASC)}
-        jumpTo={jumpTo}
-        selected={history.step}
-      />
-
-      <Confirm
-        open={open}
-        size='mini'
-        header='Reset game'
-        content='Do you want to reset this game?'
-        onCancel={() => setOpen(false)}
-        onConfirm={resetGame}
-      />
+      {open && showConfirm()}
     </div>
   );
 };

@@ -5,29 +5,18 @@
 @import '~antd/dist/antd.css';
 
 .App {
-  display: flex;
-  justify-content: center;
-  /* background-color: #a4b0be; */
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
 }
 
 .game-wrapper {
-  padding: 15px 0;
+  /* padding: 15px 0; */
   position: relative;
+  background-color: #2c3e50;
 }
 
 .game-wrapper .game-info {
-  position: absolute !important;
-  margin: 0;
-  left: -20px;
-  transform: translateX(-100%);
-  padding: 15px;
-  border-radius: 5px;
   font-size: 20px;
-  min-width: 170px;
-  box-shadow: none !important;
-  min-width: 290px;
 }
 
 .game-info .player {
@@ -41,6 +30,7 @@
 
 #board {
   position: relative;
+  display: inline-block;
 }
 
 #board .draw-lines {
@@ -104,12 +94,6 @@ button.board-cell {
 /* history */
 
 .history-block {
-  position: absolute !important;
-  top: 0;
-  right: -20px;
-  transform: translateX(100%);
-  margin: 0 !important;
-  min-width: 290px;
 }
 
 .history-block .history-title {
@@ -179,4 +163,7 @@ button.board-cell {
 }
 .line.O {
   stroke: rgb(0, 0, 255);
+}
+.game-card + .game-card {
+  margin-top: 20px;
 }
