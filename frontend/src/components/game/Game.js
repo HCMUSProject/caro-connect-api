@@ -380,12 +380,9 @@ const Game = ({
   };
 
   return (
-    <div
-      className='game-wrapper'
-      style={{ minHeight: window.innerHeight, overflow: 'hidden' }}
-    >
-      <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, 0]}>
-        <Col xs={24} sm={18}>
+    <div className='game-wrapper' style={{ minHeight: window.innerHeight }}>
+      <Row>
+        <Col xs={24} md={18}>
           <Row
             type='flex'
             style={{ height: window.innerHeight }}
@@ -404,7 +401,7 @@ const Game = ({
           </Row>
         </Col>
 
-        <Col xs={24} sm={6}>
+        <Col xs={24} md={6}>
           <Card title='Game infomation' className='game-card game-info'>
             <p>{showPlayer()}</p>
 

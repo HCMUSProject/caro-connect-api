@@ -10,9 +10,8 @@
 }
 
 .game-wrapper {
-  /* padding: 15px 0; */
   position: relative;
-  background-color: #2c3e50;
+  background-color: #34495e;
 }
 
 .game-wrapper .game-info {
