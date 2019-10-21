@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
 // import GameContainer from './containers/GameContainer';
-import WrappedRegisterForm from './components/login_register/Register';
+import RegisterContainer from './containers/RegisterContainer';
 
 function App() {
   return (
     <div className='App'>
       {/* <GameContainer /> */}
-      <WrappedRegisterForm />
+      <RegisterContainer />
     </div>
   );
 }
