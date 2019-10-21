@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import './index.scss';
 
-const RegisterForm = ({ form, isFetching, register, success, error }) => {
+const Login = ({ form, isFetching, login, error }) => {
   const { getFieldDecorator } = form;
 
   const handleSubmit = event => {
@@ -23,11 +23,9 @@ const RegisterForm = ({ form, isFetching, register, success, error }) => {
       if (!err) {
         // submit data
         const email = getFieldValue('email');
-        const name = getFieldValue('name');
         const password = getFieldValue('password');
-        const retype = getFieldValue('retype');
 
-        register({ email, name, password, retype });
+        login({ email, password });
       }
     });
   };
@@ -39,18 +37,9 @@ const RegisterForm = ({ form, isFetching, register, success, error }) => {
           <Spin spinning={isFetching}>
             <Card className='form_card'>
               <Typography.Title level={2} style={{ textAlign: 'center' }}>
-                Register
+                Login
               </Typography.Title>
 
-              {success && (
-                <Alert
-                  className='alert_form'
-                  message='Success'
-                  description={success.message}
-                  type='success'
-                  closable
-                />
-              )}
               {error && (
                 <Alert
                   className='alert_form'
@@ -66,28 +55,6 @@ const RegisterForm = ({ form, isFetching, register, success, error }) => {
                 layout='vertical'
                 onSubmit={event => handleSubmit(event)}
               >
-                <Form.Item required hasFeedback>
-                  {getFieldDecorator('name', {
-                    rules: [
-                      { required: true, message: 'Please input your name!' },
-                      {
-                        min: 3,
-                        message: 'Name must be at least 3 characters!',
-                      },
-                    ],
-                  })(
-                    <Input
-                      prefix={
-                        <Icon
-                          type='user'
-                          style={{ color: 'rgba(0,0,0,.25)' }}
-                        />
-                      }
-                      type='text'
-                      placeholder='Fullname'
-                    />,
-                  )}
-                </Form.Item>
                 <Form.Item required hasFeedback>
                   {getFieldDecorator('email', {
                     rules: [
@@ -138,37 +105,6 @@ const RegisterForm = ({ form, isFetching, register, success, error }) => {
                   )}
                 </Form.Item>
 
-                <Form.Item required hasFeedback>
-                  {getFieldDecorator('retype', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please input your retype password!',
-                      },
-                      {
-                        validator: (rule, value, callback) => {
-                          const { getFieldValue } = form;
-                          if (value && value !== getFieldValue('password')) {
-                            callback('Re-type password is not matched!');
-                          }
-                          callback();
-                        },
-                      },
-                    ],
-                  })(
-                    <Input
-                      prefix={
-                        <Icon
-                          type='lock'
-                          style={{ color: 'rgba(0,0,0,.25)' }}
-                        />
-                      }
-                      type='password'
-                      placeholder='Re-type password'
-                    />,
-                  )}
-                </Form.Item>
-
                 <Form.Item style={{ marginBottom: '0px' }}>
                   <Button
                     block
@@ -177,7 +113,7 @@ const RegisterForm = ({ form, isFetching, register, success, error }) => {
                     htmlType='submit'
                     onClick={event => handleSubmit(event)}
                   >
-                    Sign up
+                    Log in
                   </Button>
                   <div
                     style={{
@@ -186,8 +122,8 @@ const RegisterForm = ({ form, isFetching, register, success, error }) => {
                       textAlign: 'right',
                     }}
                   >
-                    Already have account? &nbsp;
-                    <a href='/login'>Sign in</a>
+                    New with our? &nbsp;
+                    <a href='/register'>Sign up now</a>
                   </div>
                 </Form.Item>
               </Form>
@@ -199,8 +135,6 @@ const RegisterForm = ({ form, isFetching, register, success, error }) => {
   );
 };
 
-const WrappedRegisterForm = Form.create({ name: 'form_register' })(
-  RegisterForm,
-);
+const WrappedLogin = Form.create({ name: 'form_login' })(Login);
 
-export default WrappedRegisterForm;
+export default WrappedLogin;

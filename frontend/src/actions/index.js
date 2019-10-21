@@ -9,6 +9,9 @@ export const EMPTY_HISTORY = 'EMPTY_HISTORY';
 export const START_REGISTER = 'START_REGISTER';
 export const END_REGISTER = 'END_REGISTER';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
+export const START_LOGIN = 'START_LOGIN';
+export const END_LOGIN = 'END_LOGIN';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export function mark({ row, col, player }) {
   return { type: MARK, row, col, player };
@@ -50,16 +53,45 @@ export function register(user) {
   return dispatch => {
     dispatch(startRegister());
 
-    const { REACT_APP_HOST_BE } = process.env;
-
     // call api
     return axios
-      .post(`${REACT_APP_HOST_BE}/user/register`, user)
+      .post('/user/register', user)
       .then(response => {
         dispatch(endRegister(response.data.data, response.data.success));
       })
       .catch(error => {
         dispatch(registerError(error.response.data.error));
+      });
+  };
+}
+
+export function startLogin() {
+  return { type: START_LOGIN };
+}
+
+export function endLogin(data, success) {
+  return { type: END_LOGIN, data, success };
+}
+
+export function loginError(error) {
+  return { type: LOGIN_ERROR, error };
+}
+
+export function login(user) {
+  return dispatch => {
+    dispatch(startLogin());
+
+    // call api
+    return axios
+      .post('/user/login', user)
+      .then(response => {
+        dispatch(endLogin(response.data.data, response.data.success));
+
+        // set token to localstorage
+        localStorage.setItem('token', response.data.data.token);
+      })
+      .catch(error => {
+        dispatch(loginError(error.response.data.error));
       });
   };
 }
