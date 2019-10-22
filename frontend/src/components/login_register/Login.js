@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Form,
   Input,
@@ -11,10 +11,10 @@ import {
   Spin,
   Alert,
 } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './index.scss';
 
-const Login = ({ form, isFetching, login, error }) => {
+const Login = ({ form, isFetching, login, error, getProfile, user }) => {
   const { getFieldDecorator } = form;
 
   const handleSubmit = event => {
@@ -31,6 +31,14 @@ const Login = ({ form, isFetching, login, error }) => {
     });
   };
 
+  // component did mount
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  if (user) {
+    return <Redirect to={{ pathname: '/' }} />;
+  }
   return (
     <div className='wrapped_form' style={{ minHeight: window.innerHeight }}>
       <Row type='flex' justify='center'>
@@ -59,7 +67,10 @@ const Login = ({ form, isFetching, login, error }) => {
                 <Form.Item required hasFeedback>
                   {getFieldDecorator('email', {
                     rules: [
-                      { required: true, message: 'Please input your email!' },
+                      {
+                        required: true,
+                        message: 'Please input your email!',
+                      },
                       {
                         // eslint-disable-next-line
                         pattern: /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/,

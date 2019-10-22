@@ -5,29 +5,33 @@ const User = require('../models/User.model');
 const UserService = require('../services/userService');
 
 router.post('/login', (req, res, next) => {
-  console.log(req.body.email);
   passport.authenticate('local', { session: false }, (error, user, info) => {
     if (error || !user) {
       return res.status(400).json({
-        message: info ? info.message : 'Something is not right.',
-        user
+        error: {
+          message: info ? info.message : 'Something is not right.'
+        },
+        data: user
       });
     }
 
     req.login(user, { session: false }, err => {
       if (err) {
-        return res.status(400).json(err);
+        return res.status(400).json({ error: err });
       }
 
       // generate jwt token
       const token = UserService.generateToken(user);
 
       return res.status(200).json({
-        user: {
+        data: {
           _id: user._id,
-          email: user.email
+          email: user.email,
+          token
         },
-        token
+        success: {
+          message: 'Login successfully!'
+        }
       });
     });
   })(req, res);
@@ -69,7 +73,9 @@ router.post('/register', async (req, res, next) => {
         _id: retUser._id,
         email: retUser.email
       },
-      message: 'Account is created!'
+      success: {
+        message: 'Account is created!'
+      }
     });
   } catch (error) {
     next(error);

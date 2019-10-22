@@ -1,4 +1,5 @@
 import axios from 'axios';
+import LocalStorage from '../utils/LocalStorage';
 
 export const MARK = 'MARK';
 export const SET_TURN = 'SET_NEXT_TURN';
@@ -85,13 +86,41 @@ export function login(user) {
     return axios
       .post('/user/login', user)
       .then(response => {
-        dispatch(endLogin(response.data.data, response.data.success));
-
+        const { token } = response.data.data;
         // set token to localstorage
-        localStorage.setItem('token', response.data.data.token);
+        localStorage.setItem('token', token);
+        // stick token to request header
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+        dispatch(endLogin(response.data.data, response.data.success));
       })
       .catch(error => {
         dispatch(loginError(error.response.data.error));
       });
+  };
+}
+
+export function getProfile() {
+  return dispatch => {
+    dispatch(startLogin());
+
+    const token = LocalStorage.getToken();
+
+    if (token) {
+      return axios
+        .get('/me', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(response => {
+          dispatch(endLogin(response.data.data, null));
+        })
+        .catch(() => {
+          dispatch(endLogin(null, null));
+        });
+    }
+    return {};
   };
 }

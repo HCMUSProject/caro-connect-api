@@ -1,22 +1,8 @@
-function WriteHistory(history) {
-  localStorage.removeItem('history');
-  localStorage.setItem('history', JSON.stringify(history));
-}
+const getToken = () => {
+  return localStorage.getItem('token');
+};
+const setToken = jwt => {
+  return localStorage.setItem('token', jwt);
+};
 
-function ReadHistory() {
-  const data = localStorage.getItem('history');
-  return JSON.parse(data);
-}
-
-function EmptyHistory(size) {
-  const history = [
-    {
-      board: new Array(size).fill(null).map(() => new Array(size).fill(null)),
-      lastPosition: null,
-      id: 0,
-    },
-  ];
-  WriteHistory(history);
-}
-
-export { WriteHistory, ReadHistory, EmptyHistory };
+export default { getToken, setToken };
