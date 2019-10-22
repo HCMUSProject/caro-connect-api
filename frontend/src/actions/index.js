@@ -13,6 +13,7 @@ export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const START_LOGIN = 'START_LOGIN';
 export const END_LOGIN = 'END_LOGIN';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const LOGOUT = 'LOGOUT';
 
 export function mark({ row, col, player }) {
   return { type: MARK, row, col, player };
@@ -88,7 +89,7 @@ export function login(user) {
       .then(response => {
         const { token } = response.data.data;
         // set token to localstorage
-        localStorage.setItem('token', token);
+        LocalStorage.setToken(token);
         // stick token to request header
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
@@ -105,7 +106,6 @@ export function getProfile() {
     dispatch(startLogin());
 
     const token = LocalStorage.getToken();
-
     if (token) {
       return axios
         .get('/me', {
@@ -121,6 +121,12 @@ export function getProfile() {
           dispatch(endLogin(null, null));
         });
     }
+    dispatch(endLogin(null, null));
+
     return {};
   };
+}
+
+export function logOut() {
+  return { type: LOGOUT };
 }

@@ -1,9 +1,20 @@
-import React from 'react';
-import { Menu, Icon, Row, Col, Card } from 'antd';
+import React, { useEffect } from 'react';
+import { Menu, Icon, Row, Col, Card, Button } from 'antd';
 import { Link } from 'react-router-dom';
+import LocalStorage from '../../utils/LocalStorage';
 import './index.scss';
 
-const Home = () => {
+const Home = ({ user, getProfile, logOut }) => {
+  const handleLogout = event => {
+    event.preventDefault();
+    LocalStorage.removeToken();
+    logOut();
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   return (
     <div>
       <Menu mode='horizontal'>
@@ -20,23 +31,45 @@ const Home = () => {
           </Link>
         </Menu.Item>
 
-        <Menu.Item className='float-right'>
-          <Link to='/login'>
-            <Icon type='login' />
-            Login
-          </Link>
-        </Menu.Item>
+        {!user && (
+          <Menu.Item className='float-right'>
+            <Link to='/register'>
+              <Icon type='user-add' />
+              Register
+            </Link>
+          </Menu.Item>
+        )}
+
+        {!user && (
+          <Menu.Item className='float-right'>
+            <Link to='/login'>
+              <Icon type='login' />
+              Login
+            </Link>
+          </Menu.Item>
+        )}
+
+        {user && (
+          <Menu.Item className='float-right'>
+            <Button type='link' onClick={event => handleLogout(event)}>
+              <Icon type='logout' />
+              Logout
+            </Button>
+          </Menu.Item>
+        )}
       </Menu>
 
-      <Row type='flex' justify='center' style={{ marginTop: '20px' }}>
-        <Col xs={20} md={12}>
-          <Card title='User infomation' loading>
-            <p>Id: </p>
-            <p>Email: </p>
-            <p>Name: </p>
-          </Card>
-        </Col>
-      </Row>
+      {user && (
+        <Row type='flex' justify='center' style={{ marginTop: '20px' }}>
+          <Col xs={20} md={12}>
+            <Card title='User infomation'>
+              <p>Id: {user.id}</p>
+              <p>Email: {user.email}</p>
+              <p>Name: {user.name}</p>
+            </Card>
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };

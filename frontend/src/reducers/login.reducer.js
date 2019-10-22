@@ -1,4 +1,4 @@
-import { START_LOGIN, END_LOGIN, LOGIN_ERROR } from '../actions';
+import { START_LOGIN, END_LOGIN, LOGIN_ERROR, LOGOUT } from '../actions';
 
 const initialState = {
   isFetching: false,
@@ -20,6 +20,8 @@ export default function login(state = initialState, action) {
       };
     case LOGIN_ERROR:
       return { ...state, isFetching: false, error: action.error };
+    case LOGOUT:
+      return { ...state, user: null };
     default:
       return state;
   }

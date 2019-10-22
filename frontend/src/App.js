@@ -4,7 +4,7 @@ import './App.css';
 import GameContainer from './containers/GameContainer';
 import RegisterContainer from './containers/RegisterContainer';
 import LoginContainer from './containers/LoginContainer';
-import Home from './components/home/Home';
+import HomeContainer from './containers/HomeContainer';
 
 function App() {
   // fetch api for get current user with token
@@ -18,7 +18,7 @@ function App() {
           <Route path='/login' component={LoginContainer} />
           <Route path='/register' component={RegisterContainer} />
           <Route path='/game' component={GameContainer} />
-          <Route path='/' component={Home} />
+          <Route exact path='/' component={HomeContainer} />
         </Switch>
       </Router>
     </div>
