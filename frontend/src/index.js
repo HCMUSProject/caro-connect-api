@@ -1,14 +1,8 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
+import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Root from './Root';
 import store from './store';
 import './utils/axios.config';
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root'),
-);
+ReactDOM.render(<Root store={store} />, document.getElementById('root'));

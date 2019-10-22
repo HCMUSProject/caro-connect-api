@@ -11,6 +11,7 @@ import {
   Spin,
   Alert,
 } from 'antd';
+import { Link } from 'react-router-dom';
 import './index.scss';
 
 const Login = ({ form, isFetching, login, error }) => {
@@ -123,7 +124,7 @@ const Login = ({ form, isFetching, login, error }) => {
                     }}
                   >
                     New with our? &nbsp;
-                    <a href='/register'>Sign up now</a>
+                    <Link to='/register'>Sign up now</Link>
                   </div>
                 </Form.Item>
               </Form>
