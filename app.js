@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const cors = require('cors');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -30,8 +31,8 @@ if (!(USER && PASSWORD && DATABASE)) return process.exit(1);
 mongoose
   .connect(
     `mongodb+srv://${USER}:${PASSWORD}` +
-      '@restapi-jwt-kpxei.gcp.mongodb.net/' +
-      `${DATABASE}?retryWrites=true&w=majority`,
+    '@restapi-jwt-kpxei.gcp.mongodb.net/' +
+    `${DATABASE}?retryWrites=true&w=majority`,
     {
       useCreateIndex: true,
       useNewUrlParser: true,
@@ -42,16 +43,25 @@ mongoose
     throw new Error(error);
   });
 
-// use passport
+
 app.use('/', require('./routes/index'));
 
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
+  // serve reactjs index file
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  });
+}
+
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500).json({ err });
 });
 

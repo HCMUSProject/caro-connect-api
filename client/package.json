@@ -68,5 +68,5 @@
       "pre-commit": "lint-staged"
     }
   },
-  "homepage": "https://hcmusproject.github.io/caro-v3"
+  "proxy": "http://localhost:5000"
 }
